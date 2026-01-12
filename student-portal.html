@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .navbar {
+            background-color: #2c3e50;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            margin-right: 2rem;
+            cursor: pointer;
+        }
+
+        .navbar-nav {
+            display: inline-block;
+        }
+
+        .nav-link {
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .nav-link:hover {
+            background-color: #34495e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #229954;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        table th,
+        table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-bottom: 1rem;
+        }
+
+        .action-links a {
+            margin-right: 0.5rem;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .header-with-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .student-info {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .info-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a onclick="showPage('home')" class="navbar-brand">Student Portal</a>
+        <div class="navbar-nav">
+            <a onclick="showPage('home')" class="nav-link">Home</a>
+            <a onclick="showPage('students')" class="nav-link">Students</a>
+            <a onclick="showPage('create')" class="nav-link">Add Student</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="card">
+                <h1>Welcome to the Student Portal</h1>
+                
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #555; margin-bottom: 2rem;">
+                    The Student Portal is a comprehensive system designed to manage student information efficiently. 
+                    This portal allows administrators to add, view, edit, and manage student records with ease. 
+                    Track student details including their names, email addresses, courses, and year levels all in one centralized location.
+                </p>
+
+                <div style="margin-top: 2rem;">
+                    <h2>Getting Started</h2>
+                    <p style="margin-bottom: 1.5rem; color: #666;">
+                        Begin by viewing the complete list of students or add a new student to the system.
+                    </p>
+                    <a onclick="showPage('students')" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                        View Student List
+                    </a>
+                </div>
+
+                <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                    <h2>Quick Actions</h2>
+                    <div class="quick-actions">
+                        <a onclick="showPage('students')" class="btn btn-primary">View All Students</a>
+                        <a onclick="showPage('create')" class="btn btn-success">Add New Student</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student List Page -->
+        <div id="students" class="page">
+            <div class="card">
+                <div class="header-with-button">
+                    <h1>Student List</h1>
+                    <a onclick="showPage('create')" class="btn btn-success">Add New Student</a>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Year Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Juan Dela Cruz</td>
+                            <td>Computer Science</td>
+                            <td>3rd Year</td>
+                            <td class="action-links">
+                                <a onclick="showStudent(1)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                                <a onclick="editStudent(1)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Maria Santos</td>
+                            <td>Information Technology</td>
+                            <td>2nd Year</td>
+                            <td class="action-links">
+                                <a onclick="showStudent(2)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                                <a onclick="editStudent(2)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pedro Garcia</td>
+                            <td>Information Systems</td>
+                            <td>4th Year</td>
+                            <td class="action-links">
+                                <a onclick="showStudent(3)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                                <a onclick="editStudent(3)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Ana Reyes</td>
+                            <td>Computer Science</td>
+                            <td>1st Year</td>
+                            <td class="action-links">
+                                <a onclick="showStudent(4)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                                <a onclick="editStudent(4)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Mendoza</td>
+                            <td>Information Technology</td>
+                            <td>3rd Year</td>
+                            <td class="action-links">
+                                <a onclick="showStudent(5)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                                <a onclick="editStudent(5)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Student Page -->
+        <div id="create" class="page">
+            <div class="card">
+                <h1>Add New Student</h1>
+                
+                <form onsubmit="addStudent(event)">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Enter student full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="Enter student email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course" class="form-label">Course</label>
+                        <select id="course" name="course" class="form-control" required>
+                            <option value="">Select a course</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Information Systems">Information Systems</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year_level" class="form-label">Year Level</label>
+                        <select id="year_level" name="year_level" class="form-control" required>
+                            <option value="">Select year level</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-success">Add Student</button>
+                        <a onclick="showPage('students')" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- View Student Page -->
+        <div id="show" class="page">
+            <div class="card">
+                <h1>Student Profile</h1>
+                
+                <div style="margin-top: 2rem;">
+                    <div class="student-info">
+                        <div class="info-field">
+                            <label class="info-label">Full Name</label>
+                            <p class="info-value">Juan Dela Cruz</p>
+                        </div>
+
+                        <div class="info-field">
+                            <label class="info-label">Email Address</label>
+                            <p class="info-value">juan.delacruz@example.com</p>
+                        </div>
+
+                        <div class="info-field">
+                            <label class="info-label">Course</label>
+                            <p class="info-value">Computer Science</p>
+                        </div>
+
+                        <div class="info-field">
+                            <label class="info-label">Year Level</label>
+                            <p class="info-value">3rd Year</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                        <a onclick="showPage('students')" class="btn btn-primary">Back to Student List</a>
+                        <a onclick="editStudent(1)" class="btn btn-warning">Edit Student</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Student Page -->
+        <div id="edit" class="page">
+            <div class="card">
+                <h1>Edit Student</h1>
+                
+                <form onsubmit="updateStudent(event)">
+                    <div class="form-group">
+                        <label for="edit_name" class="form-label">Full Name</label>
+                        <input type="text" id="edit_name" name="name" class="form-control" value="Juan Dela Cruz" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_email" class="form-label">Email Address</label>
+                        <input type="email" id="edit_email" name="email" class="form-control" value="juan.delacruz@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_course" class="form-label">Course</label>
+                        <select id="edit_course" name="course" class="form-control" required>
+                            <option value="">Select a course</option>
+                            <option value="Computer Science" selected>Computer Science</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Information Systems">Information Systems</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit_year_level" class="form-label">Year Level</label>
+                        <select id="edit_year_level" name="year_level" class="form-control" required>
+                            <option value="">Select year level</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year" selected>3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="btn btn-success">Update Student</button>
+                        <a onclick="showPage('students')" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function showStudent(id) {
+            showPage('show');
+        }
+
+        function editStudent(id) {
+            showPage('edit');
+        }
+
+        function addStudent(event) {
+            event.preventDefault();
+            alert('Student added successfully! (This is a demo)');
+            showPage('students');
+        }
+
+        function updateStudent(event) {
+            event.preventDefault();
+            alert('Student updated successfully! (This is a demo)');
+            showPage('students');
+        }
+    </script>
+</body>
+</html>
