@@ -275,51 +275,9 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="studentTableBody">
                         <tr>
-                            <td>Juan Dela Cruz</td>
-                            <td>Computer Science</td>
-                            <td>3rd Year</td>
-                            <td class="action-links">
-                                <a onclick="showStudent(1)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
-                                <a onclick="editStudent(1)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Maria Santos</td>
-                            <td>Information Technology</td>
-                            <td>2nd Year</td>
-                            <td class="action-links">
-                                <a onclick="showStudent(2)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
-                                <a onclick="editStudent(2)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Pedro Garcia</td>
-                            <td>Information Systems</td>
-                            <td>4th Year</td>
-                            <td class="action-links">
-                                <a onclick="showStudent(3)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
-                                <a onclick="editStudent(3)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Ana Reyes</td>
-                            <td>Computer Science</td>
-                            <td>1st Year</td>
-                            <td class="action-links">
-                                <a onclick="showStudent(4)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
-                                <a onclick="editStudent(4)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Carlos Mendoza</td>
-                            <td>Information Technology</td>
-                            <td>3rd Year</td>
-                            <td class="action-links">
-                                <a onclick="showStudent(5)" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
-                                <a onclick="editStudent(5)" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
-                            </td>
+                            <td colspan="4" style="text-align: center; padding: 2rem;">Loading students...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -357,10 +315,11 @@
                         <label for="year_level" class="form-label">Year Level</label>
                         <select id="year_level" name="year_level" class="form-control" required>
                             <option value="">Select year level</option>
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year">3rd Year</option>
-                            <option value="4th Year">4th Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                            <option value="5">5th Year</option>
                         </select>
                     </div>
 
@@ -439,10 +398,11 @@
                         <label for="edit_year_level" class="form-label">Year Level</label>
                         <select id="edit_year_level" name="year_level" class="form-control" required>
                             <option value="">Select year level</option>
-                            <option value="1st Year">1st Year</option>
-                            <option value="2nd Year">2nd Year</option>
-                            <option value="3rd Year" selected>3rd Year</option>
-                            <option value="4th Year">4th Year</option>
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                            <option value="5">5th Year</option>
                         </select>
                     </div>
 
@@ -456,6 +416,15 @@
     </div>
 
     <script>
+        const API_BASE = 'http://localhost/example-app/public/api';
+        let students = [];
+        let currentStudentId = null;
+
+        // Load students when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStudents();
+        });
+
         function showPage(pageId) {
             // Hide all pages
             const pages = document.querySelectorAll('.page');
@@ -466,26 +435,166 @@
             
             // Scroll to top
             window.scrollTo(0, 0);
+
+            // Load students when showing students page
+            if (pageId === 'students') {
+                loadStudents();
+            }
         }
 
-        function showStudent(id) {
-            showPage('show');
+        async function loadStudents() {
+            try {
+                const response = await fetch(`${API_BASE}/students`);
+                students = await response.json();
+                renderStudents();
+            } catch (error) {
+                console.error('Error loading students:', error);
+                document.getElementById('studentTableBody').innerHTML = `
+                    <tr><td colspan="4" style="text-align: center; padding: 2rem; color: #dc3545;">
+                        Error loading students. Make sure XAMPP and MySQL are running.
+                    </td></tr>
+                `;
+            }
         }
 
-        function editStudent(id) {
-            showPage('edit');
+        function renderStudents() {
+            const tbody = document.getElementById('studentTableBody');
+            
+            if (students.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="4" style="text-align: center; padding: 2rem; color: #666;">
+                        No students found. Click "Add New Student" to get started!
+                    </td></tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = students.map(student => `
+                <tr>
+                    <td>${student.name}</td>
+                    <td>${student.course}</td>
+                    <td>${student.year_level}${getYearSuffix(student.year_level)} Year</td>
+                    <td class="action-links">
+                        <a onclick="showStudent(${student.id})" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View</a>
+                        <a onclick="editStudent(${student.id})" class="btn btn-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Edit</a>
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        function addStudent(event) {
+        function getYearSuffix(year) {
+            if (year == 1) return 'st';
+            if (year == 2) return 'nd';
+            if (year == 3) return 'rd';
+            return 'th';
+        }
+
+        async function showStudent(id) {
+            try {
+                const response = await fetch(`${API_BASE}/students/${id}`);
+                const student = await response.json();
+                
+                document.querySelector('#show .info-value:nth-of-type(1)').textContent = student.name;
+                document.querySelector('#show .info-value:nth-of-type(2)').textContent = student.email;
+                document.querySelector('#show .info-value:nth-of-type(3)').textContent = student.course;
+                document.querySelector('#show .info-value:nth-of-type(4)').textContent = `${student.year_level}${getYearSuffix(student.year_level)} Year`;
+                
+                currentStudentId = id;
+                showPage('show');
+            } catch (error) {
+                alert('Error loading student details');
+            }
+        }
+
+        async function editStudent(id) {
+            try {
+                const response = await fetch(`${API_BASE}/students/${id}`);
+                const student = await response.json();
+                
+                document.getElementById('edit_name').value = student.name;
+                document.getElementById('edit_email').value = student.email;
+                document.getElementById('edit_course').value = student.course;
+                document.getElementById('edit_year_level').value = student.year_level;
+                
+                currentStudentId = id;
+                showPage('edit');
+            } catch (error) {
+                alert('Error loading student details');
+            }
+        }
+
+        async function addStudent(event) {
             event.preventDefault();
-            alert('Student added successfully! (This is a demo)');
-            showPage('students');
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                course: document.getElementById('course').value,
+                year_level: parseInt(document.getElementById('year_level').value)
+            };
+
+            try {
+                console.log('Sending data:', formData);
+                console.log('API URL:', `${API_BASE}/students`);
+                
+                const response = await fetch(`${API_BASE}/students`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                console.log('Response status:', response.status);
+                const result = await response.json();
+                console.log('Response data:', result);
+                
+                if (response.ok && result.success) {
+                    alert('Student added successfully!');
+                    event.target.reset();
+                    showPage('students');
+                } else {
+                    const errorMsg = result.message || JSON.stringify(result.errors || result);
+                    alert('Error adding student:\n' + errorMsg);
+                }
+            } catch (error) {
+                console.error('Full error:', error);
+                alert('Network Error: Cannot connect to the server.\n\nMake sure:\n1. XAMPP Apache is running\n2. Access via: http://localhost/example-app/student-portal.html\n\nError: ' + error.message);
+            }
         }
 
-        function updateStudent(event) {
+        async function updateStudent(event) {
             event.preventDefault();
-            alert('Student updated successfully! (This is a demo)');
-            showPage('students');
+            
+            const formData = {
+                name: document.getElementById('edit_name').value,
+                email: document.getElementById('edit_email').value,
+                course: document.getElementById('edit_course').value,
+                year_level: parseInt(document.getElementById('edit_year_level').value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/students/${currentStudentId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Student updated successfully!');
+                    showPage('students');
+                } else {
+                    alert('Error updating student. Please check the form.');
+                }
+            } catch (error) {
+                alert('Error updating student: ' + error.message);
+            }
         }
     </script>
 </body>

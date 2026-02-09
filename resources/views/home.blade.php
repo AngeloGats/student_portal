@@ -17,7 +17,7 @@
         <p style="margin-bottom: 1.5rem; color: #666;">
             Begin by viewing the complete list of students or add a new student to the system.
         </p>
-        <a href="{{ url('/students') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+        <a href="{{ route('students.index') }}" class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
             View Student List
         </a>
     </div>
@@ -25,8 +25,8 @@
     <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
         <h2>Quick Actions</h2>
         <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-            <a href="{{ url('/students') }}" class="btn btn-primary">View All Students</a>
-            <a href="{{ url('/students/create') }}" class="btn btn-success">Add New Student</a>
+            <a href="{{ route('students.index') }}" class="btn btn-primary">View All Students</a>
+            <a href="{{ route('students.create') }}" class="btn btn-success">Add New Student</a>
         </div>
     </div>
 </div>
